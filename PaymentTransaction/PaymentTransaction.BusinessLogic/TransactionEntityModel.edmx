@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="TechnicalAssignmentModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="payment_transaction">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="transaction_id" Type="varchar" MaxLength="50" />
+          <Property Name="amount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="currency_code" Type="char" MaxLength="3" />
+          <Property Name="transaction_date" Type="datetime" />
+          <Property Name="transaction_status" Type="varchar" MaxLength="10" />
+          <Property Name="created_datetime" Type="datetime" />
+        </EntityType>
+        <Function Name="uspGetTransByCurrency" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CurrencyType" Type="char" Mode="In" />
+        </Function>
+        <Function Name="uspGetTransByDateRange" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FromDate" Type="varchar" Mode="In" />
+          <Parameter Name="ToDate" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="uspGetTransByStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="StatusCode" Type="varchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="TechnicalAssignmentModelStoreContainer">
+          <EntitySet Name="payment_transaction" EntityType="Self.payment_transaction" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TechnicalAssignmentModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="TechnicalAssignmentEntities" annotation:LazyLoadingEnabled="true">
+          <FunctionImport Name="uspGetTransByCurrency" ReturnType="Collection(TechnicalAssignmentModel.uspGetTransByCurrency_Result)">
+          <Parameter Name="CurrencyType" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="uspGetTransByDateRange" ReturnType="Collection(TechnicalAssignmentModel.uspGetTransByDateRange_Result)">
+            <Parameter Name="FromDate" Mode="In" Type="String" />
+            <Parameter Name="ToDate" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="uspGetTransByStatus" ReturnType="Collection(TechnicalAssignmentModel.uspGetTransByStatus_Result)">
+          <Parameter Name="StatusCode" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="payment_transaction" EntityType="TechnicalAssignmentModel.payment_transaction" />
+        </EntityContainer>
+        <ComplexType Name="uspGetTransByCurrency_Result">
+          <Property Type="String" Name="transaction_id" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="payment" Nullable="false" MaxLength="45" />
+          <Property Type="DateTime" Name="transaction_date" Nullable="true" Precision="23" />
+          <Property Type="String" Name="status_code" Nullable="true" MaxLength="1" />
+        </ComplexType>
+        <ComplexType Name="uspGetTransByDateRange_Result">
+          <Property Type="String" Name="transaction_id" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="payment" Nullable="false" MaxLength="45" />
+          <Property Type="DateTime" Name="transaction_date" Nullable="true" Precision="23" />
+          <Property Type="String" Name="status_code" Nullable="true" MaxLength="1" />
+        </ComplexType>
+        <ComplexType Name="uspGetTransByStatus_Result">
+          <Property Type="String" Name="transaction_id" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="payment" Nullable="false" MaxLength="45" />
+          <Property Type="DateTime" Name="transaction_date" Nullable="true" Precision="23" />
+          <Property Type="String" Name="status_code" Nullable="true" MaxLength="1" />
+        </ComplexType>
+        <EntityType Name="payment_transaction">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="transaction_id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="currency_code" Type="String" MaxLength="3" FixedLength="true" Unicode="false" />
+          <Property Name="transaction_date" Type="DateTime" Precision="3" />
+          <Property Name="transaction_status" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="created_datetime" Type="DateTime" Precision="3" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TechnicalAssignmentModelStoreContainer" CdmEntityContainer="TechnicalAssignmentEntities">
+          <FunctionImportMapping FunctionImportName="uspGetTransByCurrency" FunctionName="TechnicalAssignmentModel.Store.uspGetTransByCurrency">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TechnicalAssignmentModel.uspGetTransByCurrency_Result">
+                <ScalarProperty Name="transaction_id" ColumnName="transaction_id" />
+                <ScalarProperty Name="payment" ColumnName="payment" />
+                <ScalarProperty Name="transaction_date" ColumnName="transaction_date" />
+                <ScalarProperty Name="status_code" ColumnName="status_code" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="uspGetTransByDateRange" FunctionName="TechnicalAssignmentModel.Store.uspGetTransByDateRange">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TechnicalAssignmentModel.uspGetTransByDateRange_Result">
+                <ScalarProperty Name="transaction_id" ColumnName="transaction_id" />
+                <ScalarProperty Name="payment" ColumnName="payment" />
+                <ScalarProperty Name="transaction_date" ColumnName="transaction_date" />
+                <ScalarProperty Name="status_code" ColumnName="status_code" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="uspGetTransByStatus" FunctionName="TechnicalAssignmentModel.Store.uspGetTransByStatus">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TechnicalAssignmentModel.uspGetTransByStatus_Result">
+                <ScalarProperty Name="transaction_id" ColumnName="transaction_id" />
+                <ScalarProperty Name="payment" ColumnName="payment" />
+                <ScalarProperty Name="transaction_date" ColumnName="transaction_date" />
+                <ScalarProperty Name="status_code" ColumnName="status_code" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="payment_transaction">
+            <EntityTypeMapping TypeName="TechnicalAssignmentModel.payment_transaction">
+              <MappingFragment StoreEntitySet="payment_transaction">
+                <ScalarProperty Name="created_datetime" ColumnName="created_datetime" />
+                <ScalarProperty Name="transaction_status" ColumnName="transaction_status" />
+                <ScalarProperty Name="transaction_date" ColumnName="transaction_date" />
+                <ScalarProperty Name="currency_code" ColumnName="currency_code" />
+                <ScalarProperty Name="amount" ColumnName="amount" />
+                <ScalarProperty Name="transaction_id" ColumnName="transaction_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

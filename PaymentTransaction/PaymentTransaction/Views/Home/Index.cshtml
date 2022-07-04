@@ -1,0 +1,45 @@
+﻿<h2>UploadTransaction</h2>
+<div class="row">
+    <form method="post" action="api/fileupload" enctype="multipart/form-data">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <input type="file" accept=".csv,.xml" class="custom-file-input" id="customFile" required="" name="uploadFile" value="">
+            @*<label class="custom-file-label" for="customFile">Choose file</label>*@
+        </div>
+        <div class="row">
+            <div class="col-md-2 mb-1 ">
+                <button type="submit" class="btn btn-primary" ><span>&nbsp;&nbsp;&nbsp;Upload&nbsp;&nbsp;&nbsp;</span></button>
+            </div>
+            <div class="col-md-3">
+
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    $(document).ready(function () {
+        
+        $("#customFile").on("change", function () {
+            //alert(this.files[0].size + " bytes");
+            if (this.files[0].size > 1024 * 1024) {
+                /*HTMLFormElement.reset();*/
+                $(this).val('');
+                alert("Upload file size is too large. Maxumun size is 1 MB.");
+            }
+            //console.log($(this).val());
+            var fileName = $(this).val().split("\\").pop();
+            if (fileName != "") {
+                var extension = fileName.split('.').pop();
+                //console.log(extension);
+                $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+                if (extension != "csv" && extension != "xml") {
+                    $(this).siblings(".custom-file-label").addClass("selected").html("");
+                    $(this).val('');
+                    alert("Unknown Format. Allow only .csv and .xml");
+                }
+            }
+
+        });
+    });
+
+</script>
